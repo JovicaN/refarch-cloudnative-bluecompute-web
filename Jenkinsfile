@@ -18,8 +18,7 @@ podTemplate(label: 'gradlePod',
                 #!/bin/bash
                 NAMESPACE=`cat /var/run/configs/registry-config/namespace`
                 REGISTRY=`cat /var/run/configs/registry-config/registry`
-                    cd docker
-                    chmod +x ./startup.sh
+                pwd
                 docker build -t \${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER} .
                 """
             }
@@ -54,6 +53,8 @@ podTemplate(label: 'gradlePod',
                 bx pr login -a https://10.99.201.116:8443 --skip-ssl-validation -u \${DOCKER_USER} -p \${DOCKER_PASSWORD} -c id-mycluster-account
                 #bx pr cluster-config cloudcluster
                 helm init --client-only
+                cd /home/jenkins/workspace/web/docker
+                chmod +x ./startup.sh
                 helm repo add bluecompute https://raw.githubusercontent.com/ibm-cloud-academy/icp-jenkins-helm-bluecompute/master/charts
                 helm install --tls -n bluecompute-web --set image.repository=\${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web --set image.tag=${env.BUILD_NUMBER} bluecompute/web
 

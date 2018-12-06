@@ -18,7 +18,8 @@ podTemplate(label: 'gradlePod',
                 #!/bin/bash
                 NAMESPACE=`cat /var/run/configs/registry-config/namespace`
                 REGISTRY=`cat /var/run/configs/registry-config/registry`
-
+                    cd docker
+                    chmod +x ./startup.sh
                 docker build -t \${REGISTRY}/\${NAMESPACE}/bluecompute-ce-web:${env.BUILD_NUMBER} .
                 """
             }
